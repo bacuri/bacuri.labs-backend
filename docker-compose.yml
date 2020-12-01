@@ -1,0 +1,52 @@
+# version: "3"
+# services:
+#   db:
+#     image: "postgres:11"
+#     restart: always
+#     container_name: "my_postgres"
+#     environment:
+#       DEBUG: 1
+#       POSTGRES_PASSWORD: cvv
+#       POSTGRES_DB: cvv
+#       POSTGRES_USER: postgres
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - my_dbdata:/var/lib/postgresql/data
+# volumes:
+#   my_dbdata:
+
+
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: cvv
+      POSTGRES_DB: cvv
+      POSTGRES_USER: postgres
+    ports:
+      - "15432:5432"
+    volumes:
+      - /data/database
+    networks:
+      - postgres-compose-network
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: jherson_k-f@hotmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin@123
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - postgres-compose-network
+
+networks: 
+  postgres-compose-network:
+    driver: bridge
+volumes:
+  my_dbdata:
