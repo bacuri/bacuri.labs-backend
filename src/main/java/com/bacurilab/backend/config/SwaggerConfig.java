@@ -89,9 +89,9 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("My API title").description("")
+        return new ApiInfoBuilder().title("Bacuri.labs API").description("")
                 .termsOfServiceUrl("https://www.example.com/api")
-                .contact(new Contact("Hasson", "http://www.example.com", "hasson@example.com"))
+                .contact(new Contact("Jherson", "http://www.example.com", "jherson@example.com"))
                 .license("Open Source").licenseUrl("https://www.example.com").version("1.0.0").build();
     }
 

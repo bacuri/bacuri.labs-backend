@@ -1,18 +1,15 @@
 package com.bacurilab.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties
-public class User implements Serializable, UserDetails {
+public class User extends DefaultPerson implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,27 +31,11 @@ public class User implements Serializable, UserDetails {
 
     @Column(nullable = false)
     @JsonInclude
-    private String firstName;
-
-    @Column(nullable = false)
-    @JsonInclude
-    private String lastName;
-
-    @Column(nullable = false)
-    @JsonInclude
     private String password;
 
     @Column(nullable = false, length = 14)
     @JsonInclude
     private String cic;
-
-    @Column(nullable = false)
-    @JsonInclude
-    private Gender gender;
-
-    @Column(nullable = false)
-    @JsonInclude
-    private LocalDateTime dateOfBirth;
 
     @Transient
     Collection<? extends GrantedAuthority> authorities;
@@ -65,6 +46,11 @@ public class User implements Serializable, UserDetails {
             @JoinColumn(name = "ROLE_NAME", referencedColumnName = "name") })
     private List<Role> role;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "USER_DEPENDENT_PROFILE", joinColumns = {
+            @JoinColumn(name = "USER_ID", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "DEPENDENT_PROFILE_ID", referencedColumnName = "id") })
+    private List<DependentProfile> dependentProfiles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,16 +1,14 @@
 package com.bacurilab.backend.service;
 
 import com.bacurilab.backend.model.User;
-import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-
 @Service
+@NoArgsConstructor
 public class ContextService {
-    User getPrincipal() {
+    public User getPrincipal() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
