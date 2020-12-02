@@ -35,4 +35,22 @@ public class RegisterService {
             return null;
         }
     }
+
+    public User update(User user) {
+        try {
+            return this.userService.update(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void delete(User user) throws Exception {
+        try {
+            this.userService.delete(user);
+        } catch (Exception e) {
+            throw new Exception(e);
+
+        }
+    }
 }
