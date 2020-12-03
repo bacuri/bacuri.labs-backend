@@ -17,10 +17,8 @@ import java.util.Collections;
 public class RegisterController {
 
     private RegisterService registerService;
-    private ContextService contextService;
 
-    public RegisterController(ContextService contextService, RegisterService registerService) {
-        this.contextService = contextService;
+    public RegisterController(RegisterService registerService) {
         this.registerService = registerService;
     }
 
@@ -29,32 +27,6 @@ public class RegisterController {
         HttpResponse response = new HttpResponse();
         try{
             response.setContent(this.registerService.register(registerRequest.getUser(),registerRequest.getRole()));
-        }catch (Exception e){
-            response.setSuccess(false);
-            response.setMessages(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(500).body(response);
-        }
-        return ResponseEntity.status(200).body(response);
-    }
-
-    @PutMapping
-    public ResponseEntity<HttpResponse> update(@RequestBody UserRequest userRequest){
-        HttpResponse response = new HttpResponse();
-        try{
-            response.setContent(this.registerService.update(userRequest.getUser()));
-        }catch (Exception e){
-            response.setSuccess(false);
-            response.setMessages(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(500).body(response);
-        }
-        return ResponseEntity.status(200).body(response);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<HttpResponse> delete(){
-        HttpResponse response = new HttpResponse();
-        try{
-            this.registerService.delete(contextService.getPrincipal());
         }catch (Exception e){
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
