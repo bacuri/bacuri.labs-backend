@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     {
         webSecurity
                 .ignoring()
+//                .regexMatchers("/.*")
                 .antMatchers("/test/**", "/register/**", "/role/**", "/swagger-ui**", "/webjars/**", "/swagger-resources/**", "/v2/api-docs");
     }
 

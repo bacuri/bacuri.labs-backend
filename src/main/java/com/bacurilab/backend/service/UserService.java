@@ -21,13 +21,32 @@ public class UserService {
 
 
     public User save(User user) {
-        this.userRepository.save(user);
+        this.userRepository.saveAndFlush(user);
         return user;
     }
 
     public void delete(User user) {
         this.userRepository.delete(user);
-        ;
+    }
+
+    public User findByEmail(String email) throws RuntimeException {
+        Optional<User> optional = this.userRepository.findByEmail(email);
+        if (optional.isPresent()) {
+            User user = optional.get();
+            user.setPassword(null);
+            return user;
+        }
+        return null;
+    }
+
+    public User info(User user) throws RuntimeException {
+        Optional<User> optional = this.userRepository.findById(user.getId());
+        if (optional.isPresent()) {
+            User userInfo = optional.get();
+            userInfo.setPassword(null);
+            return userInfo;
+        }
+        throw new RuntimeException();
     }
 
     public User update(User user) {
@@ -51,7 +70,7 @@ public class UserService {
 
     public User changePassword(User user, String oldPassword, String newPassword) throws PasswordException {
 
-        if(passwordEncoder.encode(oldPassword).equals(passwordEncoder.encode(user.getPassword()))){
+        if (passwordEncoder.encode(oldPassword).equals(passwordEncoder.encode(user.getPassword()))) {
             user.setPassword(passwordEncoder.encode(newPassword));
             return this.userRepository.save(user);
         }

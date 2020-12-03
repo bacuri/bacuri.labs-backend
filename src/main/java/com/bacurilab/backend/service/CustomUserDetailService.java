@@ -47,7 +47,7 @@ public class CustomUserDetailService implements UserDetailsService {
         return newUser;
     }
 
-    private List<GrantedAuthority> buildUserAuthority(List<Role> userRoles) {
+    private List<GrantedAuthority> buildUserAuthority(Set<Role> userRoles) {
 
         Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 

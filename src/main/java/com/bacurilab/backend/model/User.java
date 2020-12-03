@@ -4,15 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
+import static org.hibernate.id.PersistentIdentifierGenerator.SCHEMA;
+
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "users")
 @Data
@@ -21,11 +24,13 @@ import java.util.List;
 @JsonIgnoreProperties
 public class User extends DefaultPerson implements Serializable, UserDetails {
 
+    private static final long serialVersionUID = 1937092259841689827L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @JsonInclude
     private String email;
 
@@ -40,17 +45,17 @@ public class User extends DefaultPerson implements Serializable, UserDetails {
     @Transient
     Collection<? extends GrantedAuthority> authorities;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLES", joinColumns = {
-            @JoinColumn(name = "USER_EMAIL", referencedColumnName = "email")}, inverseJoinColumns = {
-            @JoinColumn(name = "ROLE_NAME", referencedColumnName = "name") })
-    private List<Role> role;
+            @JoinColumn(name = "USER_ID", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "ROLE_NAME", referencedColumnName = "name")})
+    private Set<Role> role = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinTable(name = "USER_DEPENDENT_PROFILE", joinColumns = {
             @JoinColumn(name = "USER_ID", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "DEPENDENT_PROFILE_ID", referencedColumnName = "id") })
-    private List<DependentProfile> dependentProfiles;
+    private Set<DependentProfile> dependentProfiles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -81,4 +86,15 @@ public class User extends DefaultPerson implements Serializable, UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        return result;
+    }
+
 }

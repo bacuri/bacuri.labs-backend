@@ -24,6 +24,19 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping
+    public ResponseEntity<HttpResponse> info(){
+        HttpResponse response = new HttpResponse();
+        try{
+            response.setContent(this.userService.info(contextService.getPrincipal()));
+        }catch (Exception e){
+            response.setSuccess(false);
+            response.setMessages(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(500).body(response);
+        }
+        return ResponseEntity.status(200).body(response);
+    }
+
 
     @PutMapping
     public ResponseEntity<HttpResponse> update(@RequestBody UserRequest userRequest){

@@ -1,5 +1,8 @@
 package com.bacurilab.backend.config;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +20,7 @@ import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,6 +35,8 @@ public class SwaggerConfig {
     @Value("${security.oauth2.client.client-secret}")
     private String clientSecret;
 
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+
     @Bean
     public Docket api() {
 
@@ -42,22 +48,30 @@ public class SwaggerConfig {
         list.add(new ResponseMessageBuilder().code(406).message("Not Acceptable")
                 .responseModel(new ModelRef("Result")).build());
 
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any()).build().securitySchemes(Collections.singletonList(securitySchema()))
+        return new Docket(DocumentationType.SWAGGER_2).select()
+
+                .apis(Predicates.not(RequestHandlerSelectors.basePackage("org.springframework.boot")))
+                //.paths(PathSelectors.any()).build()
+                .paths(input ->
+                        !PathSelectors.regex("/oauth/.*").apply(input) &&
+                                PathSelectors.any().apply(input)).build()
+                .securitySchemes(Arrays.asList(securitySchema(), apiKey()))
                 .securityContexts(Collections.singletonList(securityContext())).pathMapping("/")
                 .useDefaultResponseMessages(false).apiInfo(apiInfo()).globalResponseMessage(RequestMethod.GET, list)
                 .globalResponseMessage(RequestMethod.POST, list);
 
-
+//        return new Docket(DocumentationType.SWAGGER_2).select().apis(Predicates.not(RequestHandlerSelectors.basePackage("org.springframework.boot")))
+//                .paths(PathSelectors.any()).build().securitySchemes(Collections.singletonList(securitySchema()))
+//                .securityContexts(Collections.singletonList(securityContext())).pathMapping("/")
+//                .useDefaultResponseMessages(false).apiInfo(apiInfo()).globalResponseMessage(RequestMethod.GET, list)
+//                .globalResponseMessage(RequestMethod.POST, list);
 
     }
 
     private OAuth securitySchema() {
 
         List<AuthorizationScope> authorizationScopeList = newArrayList();
-        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
-        authorizationScopeList.add(new AuthorizationScope("trust", "trust all"));
-        authorizationScopeList.add(new AuthorizationScope("write", "access all"));
+
 
         List<GrantType> grantTypes = newArrayList();
         GrantType creGrant = new ResourceOwnerPasswordCredentialsGrant("/oauth/token");
@@ -73,14 +87,15 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private List<SecurityReference> defaultAuth() {
+//    private List<SecurityReference> defaultAuth() {
+//
+//        final AuthorizationScope[] authorizationScopes = new AuthorizationScope[0];
+//
+//        return Collections.singletonList(new SecurityReference("oauth2schema", authorizationScopes));
+//    }
 
-        final AuthorizationScope[] authorizationScopes = new AuthorizationScope[3];
-        authorizationScopes[0] = new AuthorizationScope("read", "read all");
-        authorizationScopes[1] = new AuthorizationScope("trust", "trust all");
-        authorizationScopes[2] = new AuthorizationScope("write", "write all");
-
-        return Collections.singletonList(new SecurityReference("oauth2schema", authorizationScopes));
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
     }
 
     @Bean
@@ -93,6 +108,15 @@ public class SwaggerConfig {
                 .termsOfServiceUrl("https://www.example.com/api")
                 .contact(new Contact("Jherson", "http://www.example.com", "jherson@example.com"))
                 .license("Open Source").licenseUrl("https://www.example.com").version("1.0.0").build();
+    }
+
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope
+                = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Lists.newArrayList(
+                new SecurityReference("JWT", authorizationScopes));
     }
 
 }

@@ -26,7 +26,7 @@ public class Meu2Test {
     ContextService contextService;
 
     @GetMapping("/tester")
-    String minhaString(){
+    String minhaString() {
         return "ok";
     }
 }
