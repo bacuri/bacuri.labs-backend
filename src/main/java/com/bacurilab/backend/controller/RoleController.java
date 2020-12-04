@@ -21,7 +21,7 @@ public class RoleController {
     }
 
     @GetMapping
-    public ResponseEntity<HttpResponse> listAllRoles() {
+    public ResponseEntity<HttpResponse> listAll() {
         HttpResponse response = new HttpResponse();
         try {
             response.setContent(this.roleService.getRoles());

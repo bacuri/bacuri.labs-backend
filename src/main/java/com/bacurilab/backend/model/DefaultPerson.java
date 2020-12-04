@@ -26,8 +26,9 @@ public abstract class DefaultPerson extends DefaultDTO {
     @JsonInclude
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 6)
     @JsonInclude
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column(nullable = false)

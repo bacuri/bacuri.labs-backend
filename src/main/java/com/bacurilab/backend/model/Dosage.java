@@ -1,0 +1,16 @@
+package com.bacurilab.backend.model;
+
+public enum Dosage {
+    DOSAGE_UNIQUE("DOSAGE_UNIQUE"),
+    DOSAGE_1("DOSAGE_1"),
+    DOSAGE_2("DOSAGE_2"),
+    DOSAGE_3("DOSAGE_3"),
+    DOSAGE_REINFORCEMENT("DOSAGE_REINFORCEMENT"),
+    DOSAGE_1_REINFORCEMENT("DOSAGE_1_REINFORCEMENT"),
+    DOSAGE_2_REINFORCEMENT("DOSAGE_2_REINFORCEMENT"),
+    DOSAGE_INITIAL("DOSAGE_INITIAL"),
+    YEARLY("YEARLY");
+
+    Dosage(String dosage) {
+    }
+}

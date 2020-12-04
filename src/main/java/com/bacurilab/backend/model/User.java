@@ -46,7 +46,7 @@ public class User extends DefaultPerson implements Serializable, UserDetails {
     Collection<? extends GrantedAuthority> authorities;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "USER_ROLES", joinColumns = {
+    @JoinTable(name = "USER_ROLE", joinColumns = {
             @JoinColumn(name = "USER_ID", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "ROLE_NAME", referencedColumnName = "name")})
     private Set<Role> role = new HashSet<>();

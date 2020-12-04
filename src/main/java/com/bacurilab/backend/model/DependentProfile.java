@@ -30,7 +30,8 @@ public class DependentProfile extends DefaultPerson implements Serializable {
     @Column(length = 14)
     private String cic;
 
-    @Column
+    @Column(nullable = false, length = 7)
+    @Enumerated(EnumType.STRING)
     private Image image;
 
 }
