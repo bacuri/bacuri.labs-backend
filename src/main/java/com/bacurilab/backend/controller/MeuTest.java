@@ -48,14 +48,15 @@ public class MeuTest {
 //    EmailService emailService;
 
     @GetMapping("/vaccine")
-    String vaccine(@RequestParam("vaccineId") Long vaccineId, @RequestParam("profileId") Long profileId ) {
+    String vaccine(@RequestParam("vaccineId") Long vaccineId, @RequestParam("profileId") Long profileId, @RequestParam("professionalProfileId") Long professionalProfileId ) {
         Vaccine v = new Vaccine();
         v.setId(vaccineId);
-
         DependentProfile d = new DependentProfile();
         d.setId(profileId);
+        DependentProfile p = new DependentProfile();
+        p.setId(professionalProfileId);
 
-        DependentProfileVaccine dv = new DependentProfileVaccine(new DependentProfileVaccinePk(d, v));
+        DependentProfileVaccine dv = new DependentProfileVaccine(new DependentProfileVaccinePk(d, v), p);
         dependentProfileVaccineRepository.getTimeline(profileId);
 //        dependentProfileVaccineRepository.save(dv);
 

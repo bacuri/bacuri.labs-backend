@@ -34,4 +34,7 @@ public class DependentProfile extends DefaultPerson implements Serializable {
     @Enumerated(EnumType.STRING)
     private Image image;
 
+    @Enumerated(EnumType.STRING)
+    private ProfileType profile;
+
 }

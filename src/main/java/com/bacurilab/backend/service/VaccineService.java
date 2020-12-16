@@ -70,8 +70,8 @@ public class VaccineService {
         return null;
     }
 
-    public DependentProfileVaccine registerApplication(Long profileId, Long vaccineId) {
-        return this.dependentProfileVaccineService.save(profileId, vaccineId);
+    public DependentProfileVaccine registerApplication(Long profileId, Long vaccineId, Long professionalProfileId) {
+        return this.dependentProfileVaccineService.save(profileId, vaccineId, professionalProfileId);
     }
 
     public List<AppliedVaccine> getTimeline(Long profileId) {

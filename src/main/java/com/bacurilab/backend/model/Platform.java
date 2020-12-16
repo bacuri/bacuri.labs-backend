@@ -1,6 +1,9 @@
 package com.bacurilab.backend.model;
 
 public enum Platform {
-    WEB,
-    APP;
+    WEB("WEB"),
+    APP("APP");
+
+    Platform(String platform) {
+    }
 }

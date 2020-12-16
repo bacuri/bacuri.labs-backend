@@ -1,8 +1,6 @@
 package com.bacurilab.backend.service;
 
-import com.bacurilab.backend.model.DependentProfile;
-import com.bacurilab.backend.model.Image;
-import com.bacurilab.backend.model.User;
+import com.bacurilab.backend.model.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,7 @@ public class RegisterService {
         this.roleService = roleService;
     }
 
-    public User register(User user, String role) throws Exception {
+    public User register(User user, String role, Enum<Platform> platform) throws Exception {
         try {
             DependentProfile associated = new DependentProfile();
 
@@ -29,6 +27,7 @@ public class RegisterService {
             associated.setGender(user.getGender());
             associated.setDateOfBirth(LocalDateTime.now());
             associated.setImage(Image.DEFAULT);
+            associated.setProfile("APP".equals(platform.name()) ? ProfileType.PATIENT : ProfileType.PROFESSIONAL);
 
             user.getDependentProfiles().add(associated);
             user.getRole().add(this.roleService.getRoleById(role));

@@ -13,6 +13,7 @@
        - "5432:5432"
      volumes:
        - my_dbdata:/var/lib/postgresql/data
+       - ./src/main/resources/db/migration/init.sql:/docker-entrypoint-initdb.d/init.sql
  volumes:
    my_dbdata:
 

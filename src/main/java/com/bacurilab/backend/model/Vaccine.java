@@ -2,6 +2,7 @@ package com.bacurilab.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties
+@Builder
 public class Vaccine extends DefaultDTO implements Serializable {
 
     @Id
@@ -21,7 +23,7 @@ public class Vaccine extends DefaultDTO implements Serializable {
 
     @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
-    private AgeRange range;
+    private Range range;
 
     @Column
     private String name;
@@ -51,4 +53,8 @@ public class Vaccine extends DefaultDTO implements Serializable {
 
     @Column(length = 500)
     private String observation;
+
+    @Column(length = 16)
+    @Enumerated(EnumType.STRING)
+    private Requirement requirement;
 }

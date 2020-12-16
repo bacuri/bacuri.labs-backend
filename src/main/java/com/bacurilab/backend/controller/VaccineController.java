@@ -92,10 +92,10 @@ public class VaccineController {
 
 
     @GetMapping("/apply")
-    ResponseEntity<HttpResponse> apply(@RequestParam("vaccineId") Long vaccineId, @RequestParam("profileId") Long profileId ) {
+    ResponseEntity<HttpResponse> apply(@RequestParam("vaccineId") Long vaccineId, @RequestParam("profileId") Long profileId, @RequestParam("professionalProfileId") Long professionalProfileId) {
         HttpResponse response = new HttpResponse();
         try {
-            response.setContent(this.vaccineService.registerApplication(profileId, vaccineId));
+            response.setContent(this.vaccineService.registerApplication(profileId, vaccineId, professionalProfileId));
         } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));

@@ -26,7 +26,7 @@ public class RegisterController {
     public ResponseEntity<HttpResponse> register(@RequestBody RegisterRequest registerRequest){
         HttpResponse response = new HttpResponse();
         try{
-            response.setContent(this.registerService.register(registerRequest.getUser(),registerRequest.getRole()));
+            response.setContent(this.registerService.register(registerRequest.getUser(), registerRequest.getRole(), registerRequest.getPlatform()));
         }catch (Exception e){
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
