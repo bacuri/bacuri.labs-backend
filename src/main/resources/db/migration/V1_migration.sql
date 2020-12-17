@@ -1,4 +1,4 @@
-create table dependent_profile
+create table if not exists dependent_profile
 (
     id bigint not null
         constraint dependent_profile_pkey
@@ -16,7 +16,7 @@ create table dependent_profile
 
 alter table dependent_profile owner to postgres;
 
-create table role
+create table if not exists role
 (
     name varchar(255) not null
         constraint role_pkey
@@ -25,7 +25,7 @@ create table role
 
 alter table role owner to postgres;
 
-create table users
+create table if not exists users
 (
     id bigint not null
         constraint users_pkey
@@ -45,7 +45,7 @@ create table users
 
 alter table users owner to postgres;
 
-create table user_dependent_profile
+create table if not exists user_dependent_profile
 (
     user_id bigint not null
         constraint fkks75c4drggrv3xjkagat62ddr
@@ -61,7 +61,7 @@ create table user_dependent_profile
 
 alter table user_dependent_profile owner to postgres;
 
-create table user_role
+create table if not exists user_role
 (
     user_id bigint not null
         constraint fkj345gk1bovqvfame88rcx7yyx
@@ -75,7 +75,7 @@ create table user_role
 
 alter table user_role owner to postgres;
 
-create table vaccine
+create table if not exists vaccine
 (
     id bigint not null
         constraint vaccine_pkey
@@ -99,7 +99,7 @@ create table vaccine
 
 alter table vaccine owner to postgres;
 
-create table dependent_profile_vaccine
+create table if not exists dependent_profile_vaccine
 (
     create_at timestamp,
     situation char,
