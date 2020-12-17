@@ -14,7 +14,6 @@ create table if not exists dependent_profile
     profile varchar(255)
 );
 
-alter table dependent_profile owner to postgres;
 
 create table if not exists role
 (
@@ -23,7 +22,6 @@ create table if not exists role
             primary key
 );
 
-alter table role owner to postgres;
 
 create table if not exists users
 (
@@ -43,7 +41,6 @@ create table if not exists users
     password varchar(255) not null
 );
 
-alter table users owner to postgres;
 
 create table if not exists user_dependent_profile
 (
@@ -59,7 +56,6 @@ create table if not exists user_dependent_profile
         primary key (user_id, dependent_profile_id)
 );
 
-alter table user_dependent_profile owner to postgres;
 
 create table if not exists user_role
 (
@@ -73,7 +69,6 @@ create table if not exists user_role
         primary key (user_id, role_name)
 );
 
-alter table user_role owner to postgres;
 
 create table if not exists vaccine
 (
@@ -97,7 +92,6 @@ create table if not exists vaccine
             references vaccine
 );
 
-alter table vaccine owner to postgres;
 
 create table if not exists dependent_profile_vaccine
 (
@@ -116,7 +110,6 @@ create table if not exists dependent_profile_vaccine
         primary key (dependent_profile_id, vaccine_id)
 );
 
-alter table dependent_profile_vaccine owner to postgres;
 
 
 
@@ -217,7 +210,7 @@ INSERT INTO user_dependent_profile (user_id, dependent_profile_id) VALUES (2, 2)
 --     requirement varchar(16) default 'MANDATORY'::character varying
 -- );
 --
--- alter table vaccine owner to postgres;
+--
 --
 -- INSERT INTO vaccine (id, create_at, situation, dosage, final_range, frequency, initial_range, name, next_dosage, observation, prevented_diseases, range, next_vaccine_id, requirement) VALUES (26, '2020-12-10 23:58:41.863885', 'A', 'DOSAGE_REINFORCEMENT', 72, null, 0, 'Vacina contra febre amarela', null, 'Antes de viajar para o exterior, vacinar contra Febre Amarela 10 (dez) dias antes da viagem.', 'Febre amarela', 'INFANT', null, 'TRAVEL');
 -- INSERT INTO vaccine (id, create_at, situation, dosage, final_range, frequency, initial_range, name, next_dosage, observation, prevented_diseases, range, next_vaccine_id, requirement) VALUES (25, '2020-12-04 17:26:24.122000', 'A', 'DOSAGE_REINFORCEMENT', 72, null, 48, 'Tríplice Viral', null, null, 'Sarampo, Rubéola e Caxumba', 'INFANT', null, 'MANDATORY');
