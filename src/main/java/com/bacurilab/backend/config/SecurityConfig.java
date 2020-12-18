@@ -18,9 +18,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.Collections;
 
 @EnableWebSecurity
@@ -46,22 +48,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test/**", "/register/**", "/role/**", "/swagger-ui**", "/webjars/**", "/swagger-resources/**", "/v2/api-docs");
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-
-        http.cors().configurationSource(new CorsConfigurationSource() {
-
-            @Override
-            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedHeaders(Collections.singletonList("*"));
-                config.setAllowedMethods(Collections.singletonList("*"));
-                config.addAllowedOrigin("*");
-                config.setAllowCredentials(true);
-                return config;
-            }
-        });
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowCredentials(true);
+        //the below three lines will add the relevant CORS response headers
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
