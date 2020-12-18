@@ -45,16 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test/**", "/register/**", "/role/**", "/swagger-ui**", "/webjars/**", "/swagger-resources/**", "/v2/api-docs");
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .requestMatchers(CorsUtils::isCorsRequest).permitAll()
-                .anyRequest().authenticated()
-                .and().httpBasic()
-                .and().addFilterBefore(new WebSecurityCorsFilter(), ChannelProcessingFilter.class);
-    }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
