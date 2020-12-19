@@ -13,7 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface VaccineRepository extends JpaRepository<Vaccine, Long> {
-    Optional<Vaccine> findByRangeOrderByCreateAtDesc(Range range);
+    @Query("select v from Vaccine v order by v.id asc")
+    List<Vaccine> findAllByIdAsc();
 
     @Query("select v from Vaccine v order by v.createAt desc")
     List<Vaccine> findAllOrderByCreateAtDesc();

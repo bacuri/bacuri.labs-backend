@@ -91,7 +91,7 @@ public class VaccineController {
     }
 
 
-    @GetMapping("/apply")
+    @PostMapping("/apply")
     ResponseEntity<HttpResponse> apply(@RequestParam("vaccineId") Long vaccineId, @RequestParam("profileId") Long profileId, @RequestParam("professionalProfileId") Long professionalProfileId) {
         HttpResponse response = new HttpResponse();
         try {

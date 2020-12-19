@@ -31,7 +31,7 @@ public class VaccineService {
     }
 
     public List<Vaccine> listAll() {
-        return this.vaccineRepository.findAllOrderByCreateAtDesc();
+        return this.vaccineRepository.findAllByIdAsc();
     }
 
     public List<Vaccine> listAllByAge(Integer age) {
