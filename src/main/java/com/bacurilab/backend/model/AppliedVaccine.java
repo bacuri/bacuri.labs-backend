@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AppliedVaccine implements Serializable {
 
-    private Vaccine name;
+    private Vaccine vaccine;
     private Boolean applied;
     private LocalDateTime applicationDate;
 
