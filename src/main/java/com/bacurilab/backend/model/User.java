@@ -11,9 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
-
-import static org.hibernate.id.PersistentIdentifierGenerator.SCHEMA;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -43,7 +43,7 @@ public class User extends DefaultPerson implements Serializable, UserDetails {
     private String cic;
 
     @Transient
-    Collection<? extends GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authorities;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLE", joinColumns = {
@@ -87,8 +87,18 @@ public class User extends DefaultPerson implements Serializable, UserDetails {
         return true;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
+        User user = (User) o;
 
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        return cic != null ? cic.equals(user.cic) : user.cic == null;
+    }
 
     @Override
     public int hashCode() {

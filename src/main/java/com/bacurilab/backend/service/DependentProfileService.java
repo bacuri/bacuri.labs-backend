@@ -2,12 +2,11 @@ package com.bacurilab.backend.service;
 
 import com.bacurilab.backend.model.DependentProfile;
 import com.bacurilab.backend.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Slf4j
 @Service
 public class DependentProfileService {
     private UserService userService;
@@ -22,7 +21,7 @@ public class DependentProfileService {
             user.getDependentProfiles().add(associated);
             return this.userService.save(user);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             return null;
         }
     }
@@ -32,7 +31,7 @@ public class DependentProfileService {
             user.getDependentProfiles().remove(associated);
             return this.userService.save(user);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             return null;
         }
     }
@@ -51,7 +50,7 @@ public class DependentProfileService {
             this.userService.save(user);
             return associated;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             return null;
         }
     }

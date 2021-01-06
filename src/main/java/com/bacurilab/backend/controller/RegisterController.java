@@ -1,13 +1,13 @@
 package com.bacurilab.backend.controller;
 
 import com.bacurilab.backend.model.HttpResponse;
-import com.bacurilab.backend.model.User;
 import com.bacurilab.backend.model.request.RegisterRequest;
-import com.bacurilab.backend.model.request.UserRequest;
-import com.bacurilab.backend.service.ContextService;
 import com.bacurilab.backend.service.RegisterService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 

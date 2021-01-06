@@ -8,35 +8,36 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service("userDetailsService")
 public class CustomUserDetailService implements UserDetailsService {
 
     //get user from the database, via Hibernate
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Transactional(readOnly=true)
+    public CustomUserDetailService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(final String username)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) {
 
         //CUSTOM USER HERE vvv
-        User user = userRepository.findByEmail(username).get();
+        Optional<User> optional = userRepository.findByEmail(username);
+        if (optional.isPresent()) {
+            User user = optional.get();
 
-        List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
+            List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
 
-        //if you're implementing UserDetails you wouldn't need to call this method and instead return the User as it is
-        return buildUserForAuthentication(user, authorities);
-//        return user;
+            //if you're implementing UserDetails you wouldn't need to call this method and instead return the User as it is
+            return buildUserForAuthentication(user, authorities);
+        }
+        return null;
 
     }
 
@@ -49,16 +50,16 @@ public class CustomUserDetailService implements UserDetailsService {
 
     private List<GrantedAuthority> buildUserAuthority(Set<Role> userRoles) {
 
-        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+        Set<GrantedAuthority> setAuths = new HashSet<>();
 
         // add user's authorities
         for (Role userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority("ROLE_"+userRole.getName()));
+            setAuths.add(new SimpleGrantedAuthority("ROLE_" + userRole.getName()));
         }
 
-        List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
+        List<GrantedAuthority> result = new ArrayList<>(setAuths);
 
-        return Result;
+        return result;
     }
 
 }

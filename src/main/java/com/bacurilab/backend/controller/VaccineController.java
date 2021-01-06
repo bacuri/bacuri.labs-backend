@@ -1,13 +1,7 @@
 package com.bacurilab.backend.controller;
 
-import com.bacurilab.backend.model.DependentProfile;
-import com.bacurilab.backend.model.DependentProfileVaccine;
 import com.bacurilab.backend.model.HttpResponse;
-import com.bacurilab.backend.model.Vaccine;
-import com.bacurilab.backend.model.pk.DependentProfileVaccinePk;
-import com.bacurilab.backend.model.request.RegisterRequest;
 import com.bacurilab.backend.model.request.VaccineRequest;
-import com.bacurilab.backend.service.DependentProfileVaccineService;
 import com.bacurilab.backend.service.VaccineService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -92,7 +86,7 @@ public class VaccineController {
 
 
     @PostMapping("/apply")
-    ResponseEntity<HttpResponse> apply(@RequestParam("vaccineId") Long vaccineId, @RequestParam("profileId") Long profileId, @RequestParam("professionalProfileId") Long professionalProfileId) {
+    public ResponseEntity<HttpResponse> apply(@RequestParam("vaccineId") Long vaccineId, @RequestParam("profileId") Long profileId, @RequestParam("professionalProfileId") Long professionalProfileId) {
         HttpResponse response = new HttpResponse();
         try {
             response.setContent(this.vaccineService.registerApplication(profileId, vaccineId, professionalProfileId));
@@ -105,7 +99,7 @@ public class VaccineController {
     }
 
     @GetMapping("/timeline")
-    ResponseEntity<HttpResponse> applied(@RequestParam("profileId") Long profileId ) {
+    public ResponseEntity<HttpResponse> applied(@RequestParam("profileId") Long profileId ) {
         HttpResponse response = new HttpResponse();
         try {
             response.setContent(this.vaccineService.getTimeline(profileId));

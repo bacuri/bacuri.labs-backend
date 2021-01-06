@@ -2,7 +2,6 @@ package com.bacurilab.backend.controller;
 
 import com.bacurilab.backend.model.HttpResponse;
 import com.bacurilab.backend.model.request.DependentProfileRequest;
-import com.bacurilab.backend.model.request.RegisterRequest;
 import com.bacurilab.backend.service.ContextService;
 import com.bacurilab.backend.service.DependentProfileService;
 import org.springframework.http.ResponseEntity;

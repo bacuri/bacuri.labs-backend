@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class WebSecurityCorsFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) throws ServletException { // override init method
     }
 
     @Override
@@ -20,6 +20,6 @@ public class WebSecurityCorsFilter implements Filter {
     }
 
     @Override
-    public void destroy() {
+    public void destroy() { // override init method
     }
 }

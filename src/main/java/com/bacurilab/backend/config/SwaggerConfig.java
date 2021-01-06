@@ -1,6 +1,5 @@
 package com.bacurilab.backend.config;
 
-import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,23 +34,23 @@ public class SwaggerConfig {
     @Value("${security.oauth2.client.client-secret}")
     private String clientSecret;
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Bean
     public Docket api() {
 
+        final String MODEL_REF_TYPE = "Result";
         List<ResponseMessage> list = new java.util.ArrayList<>();
         list.add(new ResponseMessageBuilder().code(500).message("500 message")
-                .responseModel(new ModelRef("Result")).build());
+                .responseModel(new ModelRef(MODEL_REF_TYPE)).build());
         list.add(new ResponseMessageBuilder().code(401).message("Unauthorized")
-                .responseModel(new ModelRef("Result")).build());
+                .responseModel(new ModelRef(MODEL_REF_TYPE)).build());
         list.add(new ResponseMessageBuilder().code(406).message("Not Acceptable")
-                .responseModel(new ModelRef("Result")).build());
+                .responseModel(new ModelRef(MODEL_REF_TYPE)).build());
 
         return new Docket(DocumentationType.SWAGGER_2).select()
 
                 .apis(Predicates.not(RequestHandlerSelectors.basePackage("org.springframework.boot")))
-                //.paths(PathSelectors.any()).build()
                 .paths(input ->
                         !PathSelectors.regex("/oauth/.*").apply(input) &&
                                 PathSelectors.any().apply(input)).build()
@@ -60,11 +59,6 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false).apiInfo(apiInfo()).globalResponseMessage(RequestMethod.GET, list)
                 .globalResponseMessage(RequestMethod.POST, list);
 
-//        return new Docket(DocumentationType.SWAGGER_2).select().apis(Predicates.not(RequestHandlerSelectors.basePackage("org.springframework.boot")))
-//                .paths(PathSelectors.any()).build().securitySchemes(Collections.singletonList(securitySchema()))
-//                .securityContexts(Collections.singletonList(securityContext())).pathMapping("/")
-//                .useDefaultResponseMessages(false).apiInfo(apiInfo()).globalResponseMessage(RequestMethod.GET, list)
-//                .globalResponseMessage(RequestMethod.POST, list);
 
     }
 
@@ -87,12 +81,6 @@ public class SwaggerConfig {
                 .build();
     }
 
-//    private List<SecurityReference> defaultAuth() {
-//
-//        final AuthorizationScope[] authorizationScopes = new AuthorizationScope[0];
-//
-//        return Collections.singletonList(new SecurityReference("oauth2schema", authorizationScopes));
-//    }
 
     private ApiKey apiKey() {
         return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
