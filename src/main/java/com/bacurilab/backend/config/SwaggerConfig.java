@@ -29,12 +29,11 @@ import static com.google.common.collect.Lists.newArrayList;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    private static final String AUTHORIZATION_HEADER = "Authorization";
     @Value("${security.oauth2.client.client-id}")
     private String clientId;
     @Value("${security.oauth2.client.client-secret}")
     private String clientSecret;
-
-    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Bean
     public Docket api() {

@@ -54,7 +54,7 @@ public class User extends DefaultPerson implements Serializable, UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinTable(name = "USER_DEPENDENT_PROFILE", joinColumns = {
             @JoinColumn(name = "USER_ID", referencedColumnName = "id")}, inverseJoinColumns = {
-            @JoinColumn(name = "DEPENDENT_PROFILE_ID", referencedColumnName = "id") })
+            @JoinColumn(name = "DEPENDENT_PROFILE_ID", referencedColumnName = "id")})
     private Set<DependentProfile> dependentProfiles = new HashSet<>();
 
     @Override

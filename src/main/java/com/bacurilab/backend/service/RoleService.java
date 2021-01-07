@@ -18,7 +18,7 @@ public class RoleService {
 
     public Role getRoleById(String name) throws Exception {
         Optional<Role> role = this.roleRepository.findById(name);
-        if(role.isPresent())
+        if (role.isPresent())
             return role.get();
         throw new Exception();
     }

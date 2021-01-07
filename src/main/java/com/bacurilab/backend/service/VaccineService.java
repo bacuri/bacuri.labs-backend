@@ -1,6 +1,7 @@
 package com.bacurilab.backend.service;
 
 import com.bacurilab.backend.model.AppliedVaccine;
+import com.bacurilab.backend.model.DependentProfile;
 import com.bacurilab.backend.model.DependentProfileVaccine;
 import com.bacurilab.backend.model.Vaccine;
 import com.bacurilab.backend.repository.VaccineRepository;
@@ -12,12 +13,15 @@ import java.util.Optional;
 
 @Service
 public class VaccineService {
+
     private VaccineRepository vaccineRepository;
     private DependentProfileVaccineService dependentProfileVaccineService;
+    private DependentProfileService dependentProfileService;
 
-    public VaccineService(VaccineRepository vaccineRepository, DependentProfileVaccineService dependentProfileVaccineService) {
+    public VaccineService(VaccineRepository vaccineRepository, DependentProfileVaccineService dependentProfileVaccineService, DependentProfileService dependentProfileService) {
         this.vaccineRepository = vaccineRepository;
         this.dependentProfileVaccineService = dependentProfileVaccineService;
+        this.dependentProfileService = dependentProfileService;
     }
 
 
@@ -38,8 +42,8 @@ public class VaccineService {
         return this.vaccineRepository.findAllByAge(age);
     }
 
-    public Vaccine info(Vaccine vaccine) throws RuntimeException {
-        Optional<Vaccine> optional = this.vaccineRepository.findById(vaccine.getId());
+    public Vaccine getById(Long vaccine) throws RuntimeException {
+        Optional<Vaccine> optional = this.vaccineRepository.findById(vaccine);
         if (optional.isPresent()) {
             return optional.get();
         }
@@ -70,8 +74,19 @@ public class VaccineService {
         return null;
     }
 
+    public Vaccine findById(Long vaccine) throws RuntimeException {
+        Optional<Vaccine> optional = this.vaccineRepository.findById(vaccine);
+        return optional.orElse(null);
+    }
+
     public DependentProfileVaccine registerApplication(Long profileId, Long vaccineId, Long professionalProfileId) {
-        return this.dependentProfileVaccineService.save(profileId, vaccineId, professionalProfileId);
+        Vaccine vaccine = this.findById(vaccineId);
+
+        DependentProfile profile = dependentProfileService.getById(profileId);
+
+        DependentProfile professional =  dependentProfileService.getById(professionalProfileId);
+
+        return this.dependentProfileVaccineService.save(profile, vaccine, professional);
     }
 
     public List<AppliedVaccine> getTimeline(Long profileId) {

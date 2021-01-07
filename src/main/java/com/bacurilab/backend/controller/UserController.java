@@ -24,11 +24,11 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<HttpResponse> info(){
+    public ResponseEntity<HttpResponse> info() {
         HttpResponse response = new HttpResponse();
-        try{
+        try {
             response.setContent(this.userService.info(contextService.getPrincipal()));
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(500).body(response);
@@ -38,11 +38,11 @@ public class UserController {
 
 
     @PutMapping
-    public ResponseEntity<HttpResponse> update(@RequestBody UserRequest userRequest){
+    public ResponseEntity<HttpResponse> update(@RequestBody UserRequest userRequest) {
         HttpResponse response = new HttpResponse();
-        try{
+        try {
             response.setContent(this.userService.update(userRequest.getUser()));
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(500).body(response);
@@ -51,11 +51,11 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<HttpResponse> delete(){
+    public ResponseEntity<HttpResponse> delete() {
         HttpResponse response = new HttpResponse();
-        try{
+        try {
             this.userService.delete(contextService.getPrincipal());
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(500).body(response);
@@ -64,11 +64,11 @@ public class UserController {
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<HttpResponse> recovery(@RequestBody PasswordRecoveryRequest passwordRecoveryRequest){
+    public ResponseEntity<HttpResponse> recovery(@RequestBody PasswordRecoveryRequest passwordRecoveryRequest) {
         HttpResponse response = new HttpResponse();
-        try{
+        try {
             response.setContent(this.userService.changePassword(passwordRecoveryRequest.getUser(), passwordRecoveryRequest.getUser().getPassword(), passwordRecoveryRequest.getNewPassword()));
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(500).body(response);

@@ -22,7 +22,7 @@ public abstract class DefaultDTO {
     private Character situation;
 
     @PrePersist
-    private void preSetCreateAt(){
+    private void preSetCreateAt() {
         this.createAt = LocalDateTime.now();
         this.situation = 'A';
     }

@@ -19,11 +19,11 @@ import java.io.Serializable;
 @JsonIgnoreProperties
 @Embeddable
 public class DependentProfileVaccinePk implements Serializable {
-        @ManyToOne
-        @JoinColumn(name="DEPENDENT_PROFILE_ID", nullable=false)
-        private DependentProfile dependentProfileId;
+    @ManyToOne
+    @JoinColumn(name = "DEPENDENT_PROFILE_ID", nullable = false)
+    private DependentProfile dependentProfileId;
 
-        @ManyToOne
-        @JoinColumn(name="VACCINE_ID", nullable=false)
-        private Vaccine vaccineId;
+    @ManyToOne
+    @JoinColumn(name = "VACCINE_ID", nullable = false)
+    private Vaccine vaccineId;
 }

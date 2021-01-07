@@ -19,22 +19,13 @@ public class DependentProfileVaccineService {
         this.dependentProfileVaccineRepository = dependentProfileVaccineRepository;
     }
 
-    public DependentProfileVaccine save(Long profileId, Long vaccineId, Long professionalProfileId) {
-        Vaccine vaccine = new Vaccine();
-        vaccine.setId(vaccineId);
-
-        DependentProfile dependent = new DependentProfile();
-        dependent.setId(profileId);
-
-        DependentProfile professional = new DependentProfile();
-        professional.setId(professionalProfileId);
-
-        DependentProfileVaccine register = new DependentProfileVaccine(new DependentProfileVaccinePk(dependent, vaccine), professional);
+    public DependentProfileVaccine save(DependentProfile profile, Vaccine vaccine, DependentProfile professionalProfile) {
+        DependentProfileVaccine register = new DependentProfileVaccine(new DependentProfileVaccinePk(profile, vaccine), professionalProfile);
         return dependentProfileVaccineRepository.save(register);
     }
 
 
-    public List<AppliedVaccine> getTimeline(Long profileId){
+    public List<AppliedVaccine> getTimeline(Long profileId) {
         return dependentProfileVaccineRepository.getTimeline(profileId);
     }
 }

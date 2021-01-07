@@ -23,11 +23,11 @@ public class RegisterController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpResponse> register(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<HttpResponse> register(@RequestBody RegisterRequest registerRequest) {
         HttpResponse response = new HttpResponse();
-        try{
+        try {
             response.setContent(this.registerService.register(registerRequest.getUser(), registerRequest.getRole(), registerRequest.getPlatform()));
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(500).body(response);

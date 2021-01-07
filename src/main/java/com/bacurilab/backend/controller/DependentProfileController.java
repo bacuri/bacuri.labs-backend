@@ -23,11 +23,11 @@ public class DependentProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpResponse> associate(@RequestBody DependentProfileRequest dependentProfileRequest){
+    public ResponseEntity<HttpResponse> associate(@RequestBody DependentProfileRequest dependentProfileRequest) {
         HttpResponse response = new HttpResponse();
-        try{
+        try {
             response.setContent(this.dependentProfileService.associate(contextService.getPrincipal(), dependentProfileRequest.getProfile()));
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(500).body(response);
@@ -36,11 +36,11 @@ public class DependentProfileController {
     }
 
     @DeleteMapping
-    public ResponseEntity<HttpResponse> deassociate(@RequestBody DependentProfileRequest dependentProfileRequest){
+    public ResponseEntity<HttpResponse> deassociate(@RequestBody DependentProfileRequest dependentProfileRequest) {
         HttpResponse response = new HttpResponse();
-        try{
+        try {
             response.setContent(this.dependentProfileService.deassociate(contextService.getPrincipal(), dependentProfileRequest.getProfile()));
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(500).body(response);
@@ -49,11 +49,11 @@ public class DependentProfileController {
     }
 
     @PutMapping
-    public ResponseEntity<HttpResponse> updateAssociate(@RequestBody DependentProfileRequest dependentProfileRequest){
+    public ResponseEntity<HttpResponse> updateAssociate(@RequestBody DependentProfileRequest dependentProfileRequest) {
         HttpResponse response = new HttpResponse();
-        try{
+        try {
             response.setContent(this.dependentProfileService.updateAssociation(contextService.getPrincipal(), dependentProfileRequest.getProfile()));
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(500).body(response);
