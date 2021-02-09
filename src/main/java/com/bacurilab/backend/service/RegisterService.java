@@ -1,7 +1,6 @@
 package com.bacurilab.backend.service;
 
 import com.bacurilab.backend.model.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,10 +9,8 @@ import java.time.LocalDateTime;
 public class RegisterService {
     private UserService userService;
     private RoleService roleService;
-    private PasswordEncoder passwordEncoder;
 
-    public RegisterService(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+    public RegisterService(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -31,7 +28,7 @@ public class RegisterService {
 
             user.getDependentProfiles().add(associated);
             user.getRole().add(this.roleService.getRoleById(role));
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(this.userService.passwordEncode(user.getPassword()));
 
             return this.userService.save(user);
         } catch (Exception e) {
