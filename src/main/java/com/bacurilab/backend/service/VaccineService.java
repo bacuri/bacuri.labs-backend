@@ -1,7 +1,6 @@
 package com.bacurilab.backend.service;
 
 import com.bacurilab.backend.model.AppliedVaccine;
-import com.bacurilab.backend.model.DependentProfile;
 import com.bacurilab.backend.model.DependentProfileVaccine;
 import com.bacurilab.backend.model.Vaccine;
 import com.bacurilab.backend.repository.VaccineRepository;
@@ -16,12 +15,10 @@ public class VaccineService {
 
     private VaccineRepository vaccineRepository;
     private DependentProfileVaccineService dependentProfileVaccineService;
-    private DependentProfileService dependentProfileService;
 
-    public VaccineService(VaccineRepository vaccineRepository, DependentProfileVaccineService dependentProfileVaccineService, DependentProfileService dependentProfileService) {
+    public VaccineService(VaccineRepository vaccineRepository, DependentProfileVaccineService dependentProfileVaccineService) {
         this.vaccineRepository = vaccineRepository;
         this.dependentProfileVaccineService = dependentProfileVaccineService;
-        this.dependentProfileService = dependentProfileService;
     }
 
 
@@ -81,12 +78,7 @@ public class VaccineService {
 
     public DependentProfileVaccine registerApplication(Long profileId, Long vaccineId, Long professionalProfileId) {
         Vaccine vaccine = this.findById(vaccineId);
-
-        DependentProfile profile = dependentProfileService.getById(profileId);
-
-        DependentProfile professional =  dependentProfileService.getById(professionalProfileId);
-
-        return this.dependentProfileVaccineService.save(profile, vaccine, professional);
+        return this.dependentProfileVaccineService.save(profileId, vaccine, professionalProfileId);
     }
 
     public List<AppliedVaccine> getTimeline(Long profileId) {

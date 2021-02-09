@@ -13,14 +13,25 @@ import java.util.List;
 @Service
 public class DependentProfileVaccineService {
     private DependentProfileVaccineRepository dependentProfileVaccineRepository;
+    private DependentProfileService dependentProfileService;
 
 
-    public DependentProfileVaccineService(DependentProfileVaccineRepository dependentProfileVaccineRepository) {
+    public DependentProfileVaccineService(DependentProfileVaccineRepository dependentProfileVaccineRepository,
+                                          DependentProfileService dependentProfileService) {
         this.dependentProfileVaccineRepository = dependentProfileVaccineRepository;
+        this.dependentProfileService = dependentProfileService;
     }
 
     public DependentProfileVaccine save(DependentProfile profile, Vaccine vaccine, DependentProfile professionalProfile) {
         DependentProfileVaccine register = new DependentProfileVaccine(new DependentProfileVaccinePk(profile, vaccine), professionalProfile);
+        return dependentProfileVaccineRepository.save(register);
+    }
+
+    public DependentProfileVaccine save(Long profileId, Vaccine vaccine, Long professionalProfileId) {
+        DependentProfile profile = dependentProfileService.getById(profileId);
+        DependentProfile professional = dependentProfileService.getById(professionalProfileId);
+
+        DependentProfileVaccine register = new DependentProfileVaccine(new DependentProfileVaccinePk(profile, vaccine), professional);
         return dependentProfileVaccineRepository.save(register);
     }
 
