@@ -25,8 +25,12 @@ public class DependentProfileService {
         try {
             User updatedUser = this.userService.findByEmail(user.getUsername());
             updatedUser.getDependentProfiles().add(associated);
-            return this.userService.save(updatedUser);
+            User newUser =  this.userService.save(updatedUser);
+            System.out.println("---------------");
+            System.out.println(newUser.getDependentProfiles().size() == user.getDependentProfiles().size());
+            return newUser;
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
             return null;
         }
