@@ -26,6 +26,11 @@ public class UserService {
         return user;
     }
 
+    public User findById(Long userId) throws RuntimeException {
+        Optional<User> optional = this.userRepository.findById(userId);
+        return optional.orElse(null);
+    }
+
     public void delete(User user) {
         this.userRepository.delete(user);
     }

@@ -23,7 +23,7 @@ public class DependentProfileService {
 
     public User associate(User user, DependentProfile associated) {
         try {
-            User updatedUser = this.userService.findByEmail(user.getUsername());
+            User updatedUser = this.userService.findById(user.getId());
             updatedUser.getDependentProfiles().add(associated);
             User newUser =  this.userService.save(updatedUser);
             System.out.println("---------------");
