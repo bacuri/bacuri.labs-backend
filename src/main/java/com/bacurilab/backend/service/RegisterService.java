@@ -22,7 +22,7 @@ public class RegisterService {
             associated.setFirstName(user.getFirstName());
             associated.setLastName(user.getLastName());
             associated.setGender(user.getGender());
-            associated.setDateOfBirth(LocalDateTime.now());
+            associated.setDateOfBirth(user.getDateOfBirth());
             associated.setImage(Image.DEFAULT);
             associated.setProfile("APP".equals(platform.name()) ? ProfileType.PATIENT : ProfileType.PROFESSIONAL);
 
@@ -32,6 +32,7 @@ public class RegisterService {
 
             return this.userService.save(user);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("User already exists");
         }
     }
