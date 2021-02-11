@@ -23,8 +23,9 @@ public class DependentProfileService {
 
     public User associate(User user, DependentProfile associated) {
         try {
-            user.getDependentProfiles().add(associated);
-            return this.userService.save(user);
+            User updatedUser = this.userService.findByEmail(user.getUsername()).get();
+            updatedUser.getDependentProfiles().add(associated);
+            return this.userService.save(updatedUser);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
