@@ -86,10 +86,23 @@ public class VaccineController {
 
 
     @PostMapping("/apply")
-    public ResponseEntity<HttpResponse> apply(@RequestParam("vaccineId") Long vaccineId, @RequestParam("profileId") Long profileId, @RequestParam("professionalProfileId") Long professionalProfileId) {
+    public ResponseEntity<HttpResponse> apply(@RequestParam("vaccineId") Long vaccineId, @RequestParam("profileId") Long profileId, @RequestParam("professionalProfileId") Long professionalProfileId, @RequestParam(name = "campaignId", required = false) Long campaignId, @RequestParam(name = "lot", required = false) String lot, @RequestParam("transactionId") String transactionId) {
         HttpResponse response = new HttpResponse();
         try {
-            response.setContent(this.vaccineService.registerApplication(profileId, vaccineId, professionalProfileId));
+            response.setContent(this.vaccineService.registerApplication(profileId, vaccineId, professionalProfileId, campaignId, lot, transactionId));
+        } catch (Exception e) {
+            response.setSuccess(false);
+            response.setMessages(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(500).body(response);
+        }
+        return ResponseEntity.status(200).body(response);
+    }
+
+    @GetMapping("/general-timeline")
+    public ResponseEntity<HttpResponse> general(@RequestParam("profileId") Long profileId) {
+        HttpResponse response = new HttpResponse();
+        try {
+            response.setContent(this.vaccineService.getGeneralTimeline(profileId));
         } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));
@@ -99,10 +112,10 @@ public class VaccineController {
     }
 
     @GetMapping("/timeline")
-    public ResponseEntity<HttpResponse> applied(@RequestParam("profileId") Long profileId ) {
+    public ResponseEntity<HttpResponse> timeline(@RequestParam("profileId") Long profileId) {
         HttpResponse response = new HttpResponse();
         try {
-            response.setContent(this.vaccineService.getTimeline(profileId));
+            response.setContent(this.vaccineService.getTimelineByGender(profileId));
         } catch (Exception e) {
             response.setSuccess(false);
             response.setMessages(Collections.singletonList(e.getMessage()));

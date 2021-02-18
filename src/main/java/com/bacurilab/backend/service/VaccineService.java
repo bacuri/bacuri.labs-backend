@@ -1,8 +1,6 @@
 package com.bacurilab.backend.service;
 
-import com.bacurilab.backend.model.AppliedVaccine;
-import com.bacurilab.backend.model.DependentProfileVaccine;
-import com.bacurilab.backend.model.Vaccine;
+import com.bacurilab.backend.model.*;
 import com.bacurilab.backend.repository.VaccineRepository;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,7 @@ public class VaccineService {
 
     private VaccineRepository vaccineRepository;
     private DependentProfileVaccineService dependentProfileVaccineService;
+
 
     public VaccineService(VaccineRepository vaccineRepository, DependentProfileVaccineService dependentProfileVaccineService) {
         this.vaccineRepository = vaccineRepository;
@@ -76,12 +75,15 @@ public class VaccineService {
         return optional.orElse(null);
     }
 
-    public DependentProfileVaccine registerApplication(Long profileId, Long vaccineId, Long professionalProfileId) {
-        Vaccine vaccine = this.findById(vaccineId);
-        return this.dependentProfileVaccineService.save(profileId, vaccine, professionalProfileId);
+    public DependentProfileVaccine registerApplication(Long profileId, Long vaccineId, Long professionalProfileId, Long campaignId, String lot, String transactionId) {
+        return this.dependentProfileVaccineService.save(profileId, this.vaccineRepository.findById(vaccineId).orElse(null), professionalProfileId, campaignId, lot, transactionId);
     }
 
-    public List<AppliedVaccine> getTimeline(Long profileId) {
+    public List<AppliedVaccine> getGeneralTimeline(Long profileId) {
         return this.dependentProfileVaccineService.getTimeline(profileId);
+    }
+
+    public List<AppliedVaccine> getTimelineByGender(Long profileId) {
+        return this.dependentProfileVaccineService.getTimelineByGender(profileId);
     }
 }

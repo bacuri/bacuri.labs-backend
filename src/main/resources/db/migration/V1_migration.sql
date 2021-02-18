@@ -1,3 +1,20 @@
+create table if not exists   flyway_schema_history
+(
+    installed_rank integer not null
+        constraint flyway_schema_history_pk
+            primary key,
+    version varchar(50),
+    description varchar(200) not null,
+    type varchar(20) not null,
+    script varchar(1000) not null,
+    checksum integer,
+    installed_by varchar(100) not null,
+    installed_on timestamp default now() not null,
+    execution_time integer not null,
+    success boolean not null
+);
+
+
 create table if not exists dependent_profile
 (
     id bigint not null
@@ -14,6 +31,76 @@ create table if not exists dependent_profile
     profile varchar(255)
 );
 
+create table if not exists campaign
+(
+    id bigint not null
+        constraint campaign_pkey
+            primary key,
+    create_at timestamp,
+    situation char,
+    description varchar(255),
+    effective_date timestamp,
+    expire_date timestamp,
+    image varchar(255),
+    title varchar(255),
+    professional_profile_id bigint
+        constraint fkogwwwbrk07s7x5aqli08vab2y
+            references dependent_profile
+);
+
+
+create table if not exists campaign_patient_id
+(
+    campaign_id bigint not null
+        constraint fk32ec8d7c77ug89aikkvhtk6lm
+            references campaign,
+    patient_id bigint not null
+        constraint uk_sddfo0onwbp47uguhioq4a7hi
+            unique
+        constraint fkn71to508m2ldlbrht8i8k4yts
+            references dependent_profile,
+    constraint campaign_patient_id_pkey
+        primary key (campaign_id, patient_id)
+);
+
+
+create table if not exists hibernate_sequences
+(
+    sequence_name varchar(255) not null
+        constraint hibernate_sequences_pkey
+            primary key,
+    next_val bigint
+);
+
+create table if not exists place
+(
+    id bigint not null
+        constraint place_pkey
+            primary key,
+    create_at timestamp,
+    situation char,
+    amount integer,
+    applied integer,
+    description varchar(255),
+    latitude varchar(255),
+    longitude varchar(255),
+    name varchar(255)
+);
+
+
+create table if not exists campaign_place_id
+(
+    campaign_id bigint not null
+        constraint fkemvohmp7r19p6f92a5kgsqxuy
+            references campaign,
+    place_id bigint not null
+        constraint uk_i751hab44rgpltpxe9iur1cmw
+            unique
+        constraint fkksu07rsr9owlqtl9lt4r3hel7
+            references place,
+    constraint campaign_place_id_pkey
+        primary key (campaign_id, place_id)
+);
 
 create table if not exists role
 (
@@ -21,7 +108,6 @@ create table if not exists role
         constraint role_pkey
             primary key
 );
-
 
 create table if not exists users
 (
@@ -40,7 +126,6 @@ create table if not exists users
             unique,
     password varchar(255) not null
 );
-
 
 create table if not exists user_dependent_profile
 (
@@ -69,7 +154,6 @@ create table if not exists user_role
         primary key (user_id, role_name)
 );
 
-
 create table if not exists vaccine
 (
     id bigint not null
@@ -92,6 +176,19 @@ create table if not exists vaccine
             references vaccine
 );
 
+create table if not exists campaign_vaccine_id
+(
+    campaign_id bigint not null
+        constraint fkrnxjln9hoyg72afefb94vo9rb
+            references campaign,
+    vaccine_id bigint not null
+        constraint uk_lr6vdqw2r36ew2xnimdjk0ddw
+            unique
+        constraint fktookg9x00m8r06t0bjwshe0wj
+            references vaccine,
+    constraint campaign_vaccine_id_pkey
+        primary key (campaign_id, vaccine_id)
+);
 
 create table if not exists dependent_profile_vaccine
 (
@@ -108,6 +205,28 @@ create table if not exists dependent_profile_vaccine
             references dependent_profile,
     constraint dependent_profile_vaccine_pkey
         primary key (dependent_profile_id, vaccine_id)
+);
+
+create table if not exists history
+(
+    id bigint not null
+        constraint history_pkey
+            primary key,
+    create_at timestamp,
+    situation char,
+    transaction_id varchar(255) not null,
+    campaign_id bigint
+        constraint fkik1wpcgdymt0d2j7i4ena2g1e
+            references campaign,
+    patient_id bigint
+        constraint fkn3s829h8a0ep61n6wq450a85p
+            references dependent_profile,
+    professional_id bigint
+        constraint fkdqvd59lo8q2tg5et4ypw4j48r
+            references dependent_profile,
+    vaccine_id bigint
+        constraint fkej2e36bldp04cq5a0b6646aym
+            references vaccine
 );
 
 
@@ -188,7 +307,7 @@ INSERT INTO user_dependent_profile (user_id, dependent_profile_id) VALUES (2, 2)
 
 
 
--- create table vaccine
+-- create table if not exists vaccine
 -- (
 --     id bigint not null
 --         constraint vaccine_pkey

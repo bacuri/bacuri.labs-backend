@@ -14,7 +14,7 @@ create table flyway_schema_history
     success boolean not null
 );
 
-alter table flyway_schema_history owner to postgres;
+
 
 create index flyway_schema_history_s_idx
     on flyway_schema_history (success);

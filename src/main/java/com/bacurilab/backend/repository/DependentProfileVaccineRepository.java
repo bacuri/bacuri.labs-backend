@@ -2,6 +2,7 @@ package com.bacurilab.backend.repository;
 
 import com.bacurilab.backend.model.AppliedVaccine;
 import com.bacurilab.backend.model.DependentProfileVaccine;
+import com.bacurilab.backend.model.Requirement;
 import com.bacurilab.backend.model.pk.DependentProfileVaccinePk;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,5 +21,15 @@ public interface DependentProfileVaccineRepository extends JpaRepository<Depende
             " or dependent.dependentProfileVaccinePk.dependentProfileId = null " +
             " order by vaccine.id")
     List<AppliedVaccine> getTimeline(@Param("profile") Long profile);
+
+
+    @Query(" select new com.bacurilab.backend.model.AppliedVaccine( vaccine, ( case dependent.dependentProfileVaccinePk.vaccineId when vaccine.id then true else false end ), dependent.createAt) " +
+            " from Vaccine vaccine " +
+            " left join DependentProfileVaccine dependent on dependent.dependentProfileVaccinePk.vaccineId.id = vaccine.id " +
+            " where dependent.dependentProfileVaccinePk.dependentProfileId.id = :profile " +
+            " or dependent.dependentProfileVaccinePk.dependentProfileId = null " +
+            " and ((:requirement = 'BOY' and vaccine.requirement <> 'GIRL') or (:requirement = 'GIRL' and vaccine.requirement <> 'BOY')) " +
+            " order by vaccine.id")
+    List<AppliedVaccine> getTimeline(@Param("profile") Long profile, @Param("requirement") String requirement);
 
 }

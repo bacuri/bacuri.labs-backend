@@ -67,9 +67,6 @@ public class DependentProfileService {
 
     public DependentProfile getById(Long profile){
         Optional<DependentProfile> optional = this.dependentProfileRepository.findById(profile);
-        if (optional.isPresent()) {
-            return optional.get();
-        }
-        throw new RuntimeException();
+        return optional.orElse(null);
     }
 }
