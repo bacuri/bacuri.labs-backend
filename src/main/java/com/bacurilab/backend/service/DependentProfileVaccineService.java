@@ -46,7 +46,7 @@ public class DependentProfileVaccineService {
 
     public DependentProfileVaccine save(Long profileId, Vaccine vaccine, Long professionalProfileId, Long campaignId, String lot, String transactionId) {
         History history = new History();
-        history.setCampaign(this.campaignService.findById(campaignId));
+        history.setCampaign(campaignId == null ? null : this.campaignService.findById(campaignId));
         history.setPatient(this.dependentProfileService.getById(profileId));
         history.setProfessional(this.dependentProfileService.getById(professionalProfileId));
         history.setVaccine(vaccine);
